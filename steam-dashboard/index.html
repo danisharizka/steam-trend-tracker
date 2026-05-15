@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steam Trend Tracker</title>
+  <link rel="icon" href="data:,">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="noise"></div>
+
+  <!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">◈</span>
+        <div>
+          <h1>STEAM TREND TRACKER</h1>
+          <p class="brand-sub">Cloud Computing Dashboard — Google Cloud Platform</p>
+        </div>
+      </div>
+
+      <!-- GLOBAL SEARCH BAR -->
+      <div class="global-search-wrap">
+        <div class="global-search-inner">
+          <span class="search-icon">⌕</span>
+          <input
+            id="globalSearch"
+            type="text"
+            class="global-search-input"
+            placeholder="Cari game dari database..."
+            autocomplete="off"
+          />
+          <span id="globalSearchCount" class="search-count hidden"></span>
+        </div>
+        <div id="globalDropdown" class="global-dropdown hidden"></div>
+      </div>
+
+      <div class="header-meta">
+        <span id="lastUpdated" class="badge">⟳ Memuat...</span>
+        <span id="liveIndicator" class="live-dot">● LIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ SPIKE ALERT ══════════════════════════════════════════════════════════ -->
+  <section id="spikeSection" class="spike-section hidden">
+    <div class="spike-inner">
+      <span class="spike-label">⚡ SPIKE ALERT</span>
+      <div id="spikeList" class="spike-list"></div>
+    </div>
+  </section>
+
+  <!-- ══ MAIN GRID ════════════════════════════════════════════════════════════ -->
+  <main class="grid">
+    <div class="col-left">
+
+      <div class="card card--full">
+        <div class="card-header">
+          <span class="card-icon">▣</span>
+          <h2>TOP 10 GAME — PEMAIN AKTIF</h2>
+        </div>
+        <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+      </div>
+
+      <div class="card card--full">
+        <div class="card-header">
+          <span class="card-icon">◈</span>
+          <h2>TREN PEMAIN</h2>
+        </div>
+        <div class="search-wrap">
+          <div class="autocomplete-wrap">
+            <input id="trendSearch" type="text" class="input" placeholder="Cari game..." autocomplete="off" />
+            <div id="trendDropdown" class="autocomplete-dropdown hidden"></div>
+          </div>
+          <span id="trendSelected" class="selected-tag hidden"></span>
+        </div>
+        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+      </div>
+
+      <div class="card card--full">
+        <div class="card-header">
+          <span class="card-icon">⊞</span>
+          <h2>PERBANDINGAN GAME</h2>
+        </div>
+        <div class="compare-controls">
+          <div class="autocomplete-wrap">
+            <input id="compareSearchA" type="text" class="input" placeholder="Game pertama..." autocomplete="off" />
+            <div id="compareDropdownA" class="autocomplete-dropdown hidden"></div>
+          </div>
+          <span class="vs-label">VS</span>
+          <div class="autocomplete-wrap">
+            <input id="compareSearchB" type="text" class="input" placeholder="Game kedua..." autocomplete="off" />
+            <div id="compareDropdownB" class="autocomplete-dropdown hidden"></div>
+          </div>
+          <button id="compareBtn" class="btn">Bandingkan</button>
+        </div>
+        <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
+      </div>
+
+    </div>
+
+    <div class="col-right">
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">★</span>
+          <h2>REVIEW SCORE</h2>
+        </div>
+        <div id="reviewList" class="review-list"><div class="skeleton-loader"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">◎</span>
+          <h2>HARGA & DISKON</h2>
+          <span class="badge badge--small">IDR</span>
+        </div>
+        <div id="priceList" class="price-list"><div class="skeleton-loader"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">▤</span>
+          <h2>LIBRARY PENGGUNA</h2>
+        </div>
+        <div class="library-search">
+          <input id="steamIdInput" type="text" class="input" placeholder="Masukkan SteamID64 (17 digit)" maxlength="17" />
+          <button id="libraryBtn" class="btn">Cari</button>
+        </div>
+        <div id="libraryContent" class="library-content"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══ GAME DETAIL MODAL ════════════════════════════════════════════════════ -->
+  <div id="gameModal" class="modal-overlay hidden">
+    <div class="modal">
+      <button id="modalClose" class="modal-close">✕</button>
+
+      <div id="modalLoading" class="modal-loading">
+        <div class="modal-spinner"></div>
+        <span>Memuat data game...</span>
+      </div>
+
+      <div id="modalContent" class="modal-content hidden">
+
+        <div class="modal-hero">
+          <img id="modalImage" class="modal-image" src="" alt="" onerror="this.style.display='none'" />
+          <div class="modal-hero-info">
+            <h2 id="modalName" class="modal-title"></h2>
+            <div id="modalBadges" class="modal-badges"></div>
+            <div id="modalPlatforms" class="modal-platforms"></div>
+            <div id="modalRelease" class="modal-release"></div>
+          </div>
+        </div>
+
+        <!-- Not enriched notice -->
+        <div id="modalNotEnriched" class="modal-not-enriched hidden">
+          <span class="not-enriched-icon">⏳</span>
+          <div>
+            <div class="not-enriched-title">Data detail belum tersedia</div>
+            <div class="not-enriched-sub">Game ini sudah tercatat di database tapi belum di-enrich. Data lengkap akan muncul dalam beberapa hari seiring scheduler berjalan otomatis.</div>
+          </div>
+        </div>
+
+        <div id="modalInfoGrid" class="modal-grid">
+          <div class="modal-section">
+            <div class="modal-section-title">◎ HARGA</div>
+            <div id="modalPrice" class="modal-value"></div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">★ REVIEW PEMAIN</div>
+            <div id="modalReview" class="modal-value"></div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">◈ DEVELOPER</div>
+            <div id="modalDev" class="modal-value"></div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">▣ GENRE</div>
+            <div id="modalGenre" class="modal-value"></div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">◆ METACRITIC</div>
+            <div id="modalMetacritic" class="modal-value"></div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">⊞ PLATFORM</div>
+            <div id="modalPlatform2" class="modal-value"></div>
+          </div>
+        </div>
+
+        <div class="modal-section" style="margin-top:14px">
+          <div class="modal-section-title">▤ DESKRIPSI</div>
+          <p id="modalDesc" class="modal-desc"></p>
+        </div>
+
+        <div class="modal-section" style="margin-top:12px">
+          <div class="modal-section-title">⊞ KATEGORI</div>
+          <div id="modalCat" class="modal-tags"></div>
+        </div>
+
+        <div class="modal-footer">
+          <a id="modalSteamLink" href="#" target="_blank" class="btn btn--outline">Buka di Steam →</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════════════════════ -->
+  <footer>
+    <span>Steam Trend Tracker · Google Cloud Platform · Mata Kuliah Komputasi Awan</span>
+    <span>Cloud Functions · Firestore · Cloud Run · Cloud Scheduler</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

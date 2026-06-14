@@ -1,3 +1,4 @@
+// Fungsi-fungsi Cloud Functions untuk fetch data Steam, simpan ke Firestore, dan enrich data game.
 const functions = require("@google-cloud/functions-framework");
 const admin = require("firebase-admin");
 const axios = require("axios");

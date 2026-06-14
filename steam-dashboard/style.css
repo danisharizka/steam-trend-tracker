@@ -1,7 +1,5 @@
-/* ══════════════════════════════════════════════════════════════════════════
-   STEAM TREND TRACKER — style.css
-   Aesthetic: Dark industrial / terminal — terinspirasi HUD militer & retro CRT
-   ══════════════════════════════════════════════════════════════════════════ */
+/* STEAM TREND TRACKER — style.css
+   Aesthetic: Dark industrial / terminal — terinspirasi HUD militer & retro CRT */
 
 :root {
   --bg:        #0a0c10;
@@ -29,7 +27,7 @@
   --glow-teal:  0 0 24px rgba(0, 200, 160, 0.15);
 }
 
-/* ── Reset ────────────────────────────────────────────────────────────────── */
+/* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -44,19 +42,19 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Noise texture overlay ─────────────────────────────────────────────────── */
+/* Noise texture overlay */
 .noise {
   position: fixed; inset: 0; pointer-events: none; z-index: 999;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   opacity: 0.6;
 }
 
-/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
 
-/* ══ HEADER ════════════════════════════════════════════════════════════════ */
+/* HEADER */
 header {
   border-bottom: 1px solid var(--border);
   background: linear-gradient(180deg, rgba(27,154,223,0.04) 0%, transparent 100%);
@@ -100,7 +98,7 @@ header {
   animation: blink 1.5s step-end infinite;
 }
 
-/* ══ SPIKE ALERT ════════════════════════════════════════════════════════════ */
+/* SPIKE ALERT */
 .spike-section {
   background: linear-gradient(90deg, rgba(232,68,90,0.12) 0%, transparent 100%);
   border-bottom: 1px solid rgba(232,68,90,0.25);
@@ -131,7 +129,7 @@ header {
   border-radius: var(--radius);
 }
 
-/* ══ MAIN GRID ══════════════════════════════════════════════════════════════ */
+/* MAIN GRID */
 main.grid {
   max-width: 1440px; margin: 0 auto;
   padding: 20px 24px;
@@ -142,7 +140,7 @@ main.grid {
 
 .col-left, .col-right { display: flex; flex-direction: column; gap: 16px; }
 
-/* ══ CARDS ══════════════════════════════════════════════════════════════════ */
+/* CARDS */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -174,13 +172,13 @@ main.grid {
   flex: 1;
 }
 
-/* ══ CHART WRAP ══════════════════════════════════════════════════════════════ */
+/* CHART WRAP */
 .chart-wrap {
   position: relative;
   height: 240px;
 }
 
-/* ══ BADGE ═══════════════════════════════════════════════════════════════════ */
+/* BADGE */
 .badge {
   font-family: var(--font-mono); font-size: 10px;
   background: rgba(27,154,223,0.12);
@@ -191,7 +189,7 @@ main.grid {
 
 .badge--small { font-size: 9px; padding: 2px 6px; }
 
-/* ══ FORM ELEMENTS ═══════════════════════════════════════════════════════════ */
+/* FORM ELEMENTS */
 .select {
   background: var(--bg);
   border: 1px solid var(--border-hi);
@@ -228,7 +226,7 @@ main.grid {
 .input:focus { border-color: var(--steam-blue); }
 .input::placeholder { color: var(--text-dim); }
 
-/* ══ REVIEW LIST ══════════════════════════════════════════════════════════════ */
+/* REVIEW LIST */
 .review-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; }
 
 .review-item {
@@ -266,7 +264,7 @@ main.grid {
 .review-bar-wrap { grid-column: 1 / -1; height: 3px; background: var(--border); border-radius: 2px; }
 .review-bar { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
 
-/* ══ PRICE LIST ═══════════════════════════════════════════════════════════════ */
+/* PRICE LIST */
 .price-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; }
 
 .price-item {
@@ -306,7 +304,7 @@ main.grid {
   color: var(--steam-teal); letter-spacing: 0.05em;
 }
 
-/* ══ LIBRARY ══════════════════════════════════════════════════════════════════ */
+/* LIBRARY */
 .library-search { display: flex; gap: 8px; margin-bottom: 12px; }
 
 .library-content { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; }
@@ -348,7 +346,7 @@ main.grid {
   border-bottom: 1px solid var(--border); margin-bottom: 8px;
 }
 
-/* ══ COMPARE CONTROLS ════════════════════════════════════════════════════════ */
+/* COMPARE CONTROLS */
 .compare-controls {
   display: flex; align-items: center; gap: 10px;
   margin-bottom: 14px;
@@ -359,7 +357,7 @@ main.grid {
   color: var(--text-secondary);
 }
 
-/* ══ SKELETON LOADER ═════════════════════════════════════════════════════════ */
+/* SKELETON LOADER */
 .skeleton-loader {
   height: 80px; border-radius: var(--radius);
   background: linear-gradient(90deg, var(--border) 25%, var(--border-hi) 50%, var(--border) 75%);
@@ -367,7 +365,7 @@ main.grid {
   animation: shimmer 1.5s infinite;
 }
 
-/* ══ EMPTY / ERROR STATE ═════════════════════════════════════════════════════ */
+/* EMPTY / ERROR STATE */
 .empty-state {
   font-family: var(--font-mono); font-size: 11px;
   color: var(--text-secondary); text-align: center;
@@ -380,7 +378,7 @@ main.grid {
   padding: 16px 0;
 }
 
-/* ══ FOOTER ══════════════════════════════════════════════════════════════════ */
+/* FOOTER */
 footer {
   border-top: 1px solid var(--border);
   padding: 14px 24px;
@@ -389,7 +387,7 @@ footer {
   color: var(--text-dim); letter-spacing: 0.06em;
 }
 
-/* ══ ANIMATIONS ══════════════════════════════════════════════════════════════ */
+/* ANIMATIONS */
 @keyframes pulse {
   0%, 100% { text-shadow: 0 0 8px rgba(27,154,223,0.4); }
   50%       { text-shadow: 0 0 20px rgba(27,154,223,0.9); }
@@ -412,7 +410,7 @@ footer {
 
 .fade-in { animation: fadeIn 0.3s ease forwards; }
 
-/* ══ GLOBAL SEARCH ═══════════════════════════════════════════════════════════ */
+/* GLOBAL SEARCH */
 .global-search-wrap {
   position: relative; flex: 1;
   max-width: 420px; margin: 0 24px;
@@ -503,7 +501,7 @@ footer {
   padding: 20px; letter-spacing: 0.06em;
 }
 
-/* ══ MODAL ═══════════════════════════════════════════════════════════════════ */
+/* MODAL */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.8);
@@ -658,7 +656,7 @@ footer {
 }
 .btn--outline:hover { background: rgba(27,154,223,0.1); }
 
-/* ══ AUTOCOMPLETE ════════════════════════════════════════════════════════════ */
+/* AUTOCOMPLETE */
 .autocomplete-wrap { position: relative; flex: 1; min-width: 160px; }
 
 .autocomplete-dropdown {
@@ -712,7 +710,7 @@ footer {
 }
 .selected-tag.hidden { display: none; }
 
-/* ══ RESPONSIVE ══════════════════════════════════════════════════════════════ */
+/* RESPONSIVE */
 @media (max-width: 1100px) {
   main.grid { grid-template-columns: 1fr; }
   .col-right { flex-direction: row; flex-wrap: wrap; }

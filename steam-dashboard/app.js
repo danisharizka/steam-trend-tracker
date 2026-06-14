@@ -1,10 +1,8 @@
-// ═══════════════════════════════════════════════════════════════════════════
 // STEAM TREND TRACKER — app.js
 // Koneksi Firestore + render semua section dashboard
-// ═══════════════════════════════════════════════════════════════════════════
 
-// ─── Firebase Config ────────────────────────────────────────────────────────
-// Ganti dengan config Firebase proyek kamu
+// Firebase Config
+// Ganti dengan config Firebase proyek
 // Dapatkan dari: GCP Console → Firebase → Project Settings → Your Apps
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyB1h6cl7HMz6hwRNqULX3nX40uK1NvBSgw",
@@ -16,7 +14,7 @@ const FIREBASE_CONFIG = {
     measurementId: "G-LKHJ57GV8R"
 };
 
-// ─── Cloud Functions URLs ────────────────────────────────────────────────────
+// Cloud Functions URLs
 const FUNCTIONS_BASE = "https://us-central1-steam-trend-tracker.cloudfunctions.net";
  
 const ENDPOINTS = {
@@ -26,7 +24,7 @@ const ENDPOINTS = {
   library:     `${FUNCTIONS_BASE}/getUserLibrary`,
 };
  
-// ─── Chart.js Global Config ──────────────────────────────────────────────────
+// Chart.js Global Config 
 Chart.defaults.color = "#6b7f99";
 Chart.defaults.font.family = "JetBrains Mono";
 Chart.defaults.font.size = 10;
@@ -39,16 +37,14 @@ const CHART_COLORS = {
   red:   "rgba(232, 68, 90, ",
 };
  
-// ─── State ───────────────────────────────────────────────────────────────────
+// State 
 let db;
 let barChartInstance    = null;
 let trendChartInstance  = null;
 let compareChartInstance = null;
 let cachedGames = [];  // [{appid, name}, ...]
  
-// ═══════════════════════════════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════════════════════════════
 async function init() {
   firebase.initializeApp(FIREBASE_CONFIG);
   db = firebase.firestore();
@@ -68,9 +64,7 @@ async function init() {
   setupModal();
 }
  
-// ═══════════════════════════════════════════════════════════════════════════
 // BAGIAN 1: TOP 10 BAR CHART (DATA DARI FIRESTORE)
-// ═══════════════════════════════════════════════════════════════════════════
 async function loadTopGames() {
   const snap = await db
     .collection("games")
@@ -232,7 +226,7 @@ function renderTrendChart(points) {
  
 // ═══════════════════════════════════════════════════════════════════════════
 // BAGIAN 3: SPIKE ALERTS
-// ═══════════════════════════════════════════════════════════════════════════
+
 async function loadSpikeAlerts() {
   try {
     const res = await fetch(ENDPOINTS.spikes);
@@ -258,7 +252,7 @@ async function loadSpikeAlerts() {
   }
 }
  
-// ═══════════════════════════════════════════════════════════════════════════
+
 // BAGIAN 4: GAME COMPARISON CHART
 // ═══════════════════════════════════════════════════════════════════════════
 async function renderCompareChart() {
@@ -341,9 +335,8 @@ async function renderCompareChart() {
   });
 }
  
-// ═══════════════════════════════════════════════════════════════════════════
+
 // BAGIAN 5: REVIEW SCORE — searchable dari all_games
-// ═══════════════════════════════════════════════════════════════════════════
 async function loadReviews() {
   const container = document.getElementById("reviewList");
 
@@ -405,7 +398,6 @@ function renderReviewList(games, container) {
  
 // ═══════════════════════════════════════════════════════════════════════════
 // BAGIAN 6: PRICE & DISCOUNT — searchable dari all_games
-// ═══════════════════════════════════════════════════════════════════════════
 async function loadPrices() {
   const container = document.getElementById("priceList");
 
@@ -467,9 +459,7 @@ function renderPriceList(games, container) {
 
 
  
-// ═══════════════════════════════════════════════════════════════════════════
 // BAGIAN 7: USER LIBRARY LOOKUP (CALL CLOUD FUNCTION LANGSUNG)
-// ═══════════════════════════════════════════════════════════════════════════
 async function lookupLibrary() {
   const steamid = document.getElementById("steamIdInput").value.trim();
   const container = document.getElementById("libraryContent");
@@ -657,7 +647,6 @@ function highlightMatch(name, query) {
  
 // ═══════════════════════════════════════════════════════════════════════════
 // HELPER: Setup semua autocomplete setelah cachedGames terisi
-// ═══════════════════════════════════════════════════════════════════════════
 function setupAllAutocomplete(games) {
   // Tren pemain
   setupAutocomplete("trendSearch", "trendDropdown", ({ appid, name }) => {
@@ -689,9 +678,7 @@ function setupAllAutocomplete(games) {
   }
 }
  
-// ═══════════════════════════════════════════════════════════════════════════
 // UTILS
-// ═══════════════════════════════════════════════════════════════════════════
 function truncate(str, maxLen) {
   return str.length > maxLen ? str.slice(0, maxLen) + "…" : str;
 }
@@ -706,7 +693,6 @@ function escHtml(str) {
  
 // ═══════════════════════════════════════════════════════════════════════════
 // GLOBAL SEARCH — cari dari koleksi all_games di Firestore
-// ═══════════════════════════════════════════════════════════════════════════
 let searchDebounceTimer = null;
  
 function setupGlobalSearch() {
@@ -859,9 +845,7 @@ async function searchGames(query, dropdown, countEl) {
   }
 }
  
-// ═══════════════════════════════════════════════════════════════════════════
 // GAME DETAIL MODAL
-// ═══════════════════════════════════════════════════════════════════════════
 async function openGameModal(appid) {
   const modal      = document.getElementById("gameModal");
   const loading    = document.getElementById("modalLoading");
